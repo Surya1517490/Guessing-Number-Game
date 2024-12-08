@@ -1,0 +1,33 @@
+public class GameService
+{
+    private static Random random = new Random();
+
+    public string GenerateNumber()
+    {
+        var digits = Enumerable.Range(0, 10).OrderBy(x => random.Next()).Take(4).ToArray();
+        return string.Join("", digits);
+    }
+
+    public (string Feedback, bool IsCorrect) CheckGuess(string generatedNumber, string userGuess)
+    {
+        int correctPosition = 0;
+        int wrongPosition = 0;
+
+        var generatedDigits = generatedNumber.ToCharArray();
+        var guessDigits = userGuess.ToCharArray();
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (generatedDigits[i] == guessDigits[i])
+            {
+                correctPosition++;
+            }
+            else if (generatedNumber.Contains(guessDigits[i]))
+            {
+                wrongPosition++;
+            }
+        }
+
+        return ($"{new string('+', correctPosition)}{new string('-', wrongPosition)}", correctPosition == 4);
+    }
+}
