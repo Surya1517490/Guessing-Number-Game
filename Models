@@ -1,0 +1,30 @@
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int BestScore { get; set; } // Combination of time and guesses
+}
+
+public class GameResult
+{
+    public int Id { get; set; }
+    public string UserName { get; set; }
+    public int Guesses { get; set; }
+    public TimeSpan TimeTaken { get; set}
+}
+
+
+For creating database context:
+
+
+
+public class GameContext : DbContext
+{
+    public DbSet<User> Users { get; set; }
+    public DbSet<GameResult> GameResults { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer("YourConnectionStringHere");
+    }
+}
