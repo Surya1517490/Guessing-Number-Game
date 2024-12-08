@@ -1,0 +1,36 @@
+public class GameController : ControllerBase
+{
+    private readonly GameService _gameService;
+    private readonly GameContext _context;
+
+    public GameController(GameService gameService, GameContext context)
+    {
+        _gameService = gameService;
+        _context = context;
+    }
+
+    [HttpPost("start")]
+    public IActionResult StartGame([FromBody] string userName)
+    {
+        var number = _gameService.GenerateNumber();
+        // Store the generated number in session or cache for the user's session.
+        return Ok(new { Number = number });
+    }
+
+    public IActionResult SubmitGuess([FromBody] GuessRequest request)
+    {
+        
+        var feedback = _gameService.CheckGuess(generatedNumber, request.UserGuess);
+        
+  
+
+        return Ok(feedback);
+    }
+
+    
+    public IActionResult GetLeaderboard()
+    {
+        var leaderboard = _context.Users.OrderBy(u => u.BestScore).ToList();
+        return Ok(leaderboard);
+    }
+}
